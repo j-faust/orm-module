@@ -33,6 +33,8 @@ Sequelize is used to GET, PUT, POST, and DELETE items from the database for the 
 ## Testing
 
 To test this application use: 
+ * Run the mysql shell in your terminal and then type 'SOURCE ./db/schema.sql;' into the terminal 
+
  * 'npm run seed' and 'node server.js' in terminal at the 'Develop' folder
 
 Go to 'Insomnia' and test the routing at the localhost address for the 'GET', 'PUT', 'POST', and 'DELETE' for the different routes for Categories, Products and Tags
