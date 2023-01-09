@@ -3,11 +3,10 @@ const { Category, Product } = require('../../models');
 
 // The `/api/categories` endpoint
 
-router.get('/', async (req, res) => {
-  // find all categories
-  // be sure to include its associated products
+router.get('/',  async (req, res) => {
+  // find all categories and return any erros
  try {
- const userData = await Category.findAll({
+ const userData =  await Category.findAll({
     include: {
       model: Product,
       attributes: ['id', 'product_name', 'price', 'stock', 'category_id'],
@@ -20,8 +19,7 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
-  // find one category by its `id` value
-  // be sure to include its associated Products
+  // find one category by its `id` value and also returning any errors
   try {
   const userData = await Category.findOne({
     where: {
@@ -43,25 +41,25 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-  // create a new category
+  // create a new category and return any errors
   try {
-  const userData = await Category.create([
+  const userData =  await Category.create(
     {
-      category_name: req.body.category_name,
+      category_name: req.body.category_name
     }
-  ]);
+  )
   res.status(200).json(userData);
 }
   catch(err) {
-    res.status(400).json(err);  
+    res.status(400).json();  
   }
 });
  
 
 router.put('/:id', async (req, res) => {
-  // update a category by its `id` value
+  // updated categories by its `id` value and return any errors
   try {
-  const userData = await Category.update(req.body,
+  const userData = await Category.update(
     {
       category_name: req.body.category_name
     },
@@ -81,10 +79,10 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-router.delete('/:id', async (req, res) => {
-  // delete a category by its `id` value
+router.delete('/:id',  (req, res) => {
+  // to delete a category by its `id` value and return errors
   try {
-  const userData = await Category.destroy({
+  const userData =  Category.destroy({
     where: {
       id: req.params.id,
     },

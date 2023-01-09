@@ -4,11 +4,10 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 // The `/api/products` endpoint
 
 // get all products
-router.get('/',  (req, res) => {
-  // find all products
-  // be sure to include its associated Category and Tag data
+router.get('/', async (req, res) => {
+  // find all products and return errors 
   try {
-  const userData =  Product.findAll({
+  const userDataProd = await Product.findAll({
     include: {
       model: Category,
       attributes: ['category_name']
@@ -18,7 +17,7 @@ router.get('/',  (req, res) => {
       attributes: ['tag_name']
     }
   })
-  res.status(200).json(userData);
+  res.status(200).json(userDataProd);
 } catch(err) {
   res.status(500).json(err);
 }
@@ -26,10 +25,9 @@ router.get('/',  (req, res) => {
 
 // get one product
 router.get('/:id', async (req, res) => {
-  // find a single product by its `id`
-  // be sure to include its associated Category and Tag data
+  // find a single product by its `id` and returning any errors
   try {
-  const userData = await Product.findOne({
+  const userDataProdId = await Product.findOne({
     where: {
       id: req.params.id,
     },
@@ -42,10 +40,10 @@ router.get('/:id', async (req, res) => {
       attributes: ['tag_name']
     }
   })
-  if(!userData) {
+  if(!userDataProdId) {
     res.status(404).json(err);
   }
-  res.status(200).json(userData);
+  res.status(200).json(userDataProdId);
 } catch(err) {
   res.status(500).json(err);
 }
@@ -61,7 +59,7 @@ router.post('/', async (req, res) => {
       tagIds: [1, 2, 3, 4]
     }
   */
-  await Product.create(req.body)
+   await Product.create(req.body)
     .then((product) => {
       // if there's product tags, we need to create pairings to bulk create in the ProductTag model
       if (req.body.tagIds.length) {
@@ -85,8 +83,8 @@ router.post('/', async (req, res) => {
 
 // update product
 router.put('/:id', async (req, res) => {
-  // update product data
-  await Product.update(req.body, {
+  // update product data 
+   await Product.update(req.body, {
     where: {
       id: req.params.id,
     },
@@ -126,7 +124,7 @@ router.put('/:id', async (req, res) => {
 });
 
 router.delete('/:id', async (req, res) => {
-  // delete one product by its `id` value
+  // delete one product by its `id` value and return any errors 
   try {
     const deletedProd = await Product.destroy({
       where: {
